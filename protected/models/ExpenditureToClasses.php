@@ -1,20 +1,19 @@
 <?php
 
 /**
- * This is the model class for table "tbl_expenditure".
+ * This is the model class for table "tbl_expenditure_to_classes".
  *
- * The followings are the available columns in table 'tbl_expenditure':
- * @property string $id
- * @property string $name
- * @property string $amount
- * @property string $date
+ * The followings are the available columns in table 'tbl_expenditure_to_classes':
+ * @property integer $id
+ * @property string $expenditure
+ * @property integer $class_id
  */
-class Expenditure extends CActiveRecord
+class ExpenditureToClasses extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Expenditure the static model class
+	 * @return ExpenditureToClasses the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -26,7 +25,7 @@ class Expenditure extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_expenditure';
+		return 'tbl_expenditure_to_classes';
 	}
 
 	/**
@@ -37,12 +36,12 @@ class Expenditure extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'length', 'max'=>19),
-			array('amount', 'length', 'max'=>6),
-			array('date', 'safe'),
+			array('expenditure, class_id', 'required'),
+			array('class_id', 'numerical', 'integerOnly'=>true),
+			array('expenditure', 'length', 'max'=>19),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, amount, date', 'safe', 'on'=>'search'),
+			array('id, expenditure, class_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,7 +53,8 @@ class Expenditure extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'name' => array(self::BELONGS_TO, 'ExpenditureToClasses', 'expenditure'),
+			'expenditure' => array(self::HAS_MANY, 'Expenditure', 'name'),
+			'class_id' => array(elf::BELONGS_TO, 'EclassInfo', 'id'),
 		);
 	}
 
@@ -65,9 +65,8 @@ class Expenditure extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'amount' => 'Amount',
-			'date' => 'Date',
+			'expenditure' => 'Expenditure',
+			'class_id' => 'Class',
 		);
 	}
 
@@ -82,10 +81,9 @@ class Expenditure extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('amount',$this->amount,true);
-		$criteria->compare('date',$this->date,true);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('expenditure',$this->expenditure,true);
+		$criteria->compare('class_id',$this->class_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

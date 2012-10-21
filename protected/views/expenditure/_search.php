@@ -28,7 +28,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model,'date'); ?>
-		<?php echo $form->textField($model,'date',array('size'=>8,'maxlength'=>8)); ?>
+		<?php echo $form->textField($model,'date'); ?>
 	</div>
 
 	<div class="row buttons">
