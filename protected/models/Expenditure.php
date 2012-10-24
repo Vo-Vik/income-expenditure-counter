@@ -8,6 +8,7 @@
  * @property string $name
  * @property string $amount
  * @property string $date
+ * @property integer $class_id
  */
 class Expenditure extends CActiveRecord
 {
@@ -37,12 +38,14 @@ class Expenditure extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('class_id', 'required'),
+			array('class_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>19),
 			array('amount', 'length', 'max'=>6),
 			array('date', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, amount, date', 'safe', 'on'=>'search'),
+			array('id, name, amount, date, class_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,7 +57,7 @@ class Expenditure extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'name' => array(self::BELONGS_TO, 'ExpenditureToClasses', 'expenditure'),
+			'class_id' => array(self::BELONGS_TO, 'EclassInfo', 'id'),
 		);
 	}
 
@@ -68,6 +71,7 @@ class Expenditure extends CActiveRecord
 			'name' => 'Name',
 			'amount' => 'Amount',
 			'date' => 'Date',
+			'class_id' => 'Class',
 		);
 	}
 
@@ -86,6 +90,7 @@ class Expenditure extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('amount',$this->amount,true);
 		$criteria->compare('date',$this->date,true);
+		$criteria->compare('class_id',$this->class_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

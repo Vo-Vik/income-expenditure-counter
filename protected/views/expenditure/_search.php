@@ -31,6 +31,11 @@
 		<?php echo $form->textField($model,'date'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model,'class_id'); ?>
+		<?php echo $form->textField($model,'class_id'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

@@ -21,5 +21,9 @@
 	<?php echo CHtml::encode($data->date); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('class_id')); ?>:</b>
+	<?php echo CHtml::encode($data->class_id); ?>
+	<br />
+
 
 </div>
