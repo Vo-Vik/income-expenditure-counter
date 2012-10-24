@@ -50,7 +50,29 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>19,'maxlength'=>19)); ?>
+		<?php
+		$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+			'model'=>$model,
+			'attribute'=>'name',
+			'source'=>Yii::app()->createUrl('expenditure/autocomplete'),
+			// additional javascript options for the autocomplete plugin
+			'options'=>array(
+				'minLength'=>'1',
+				'select' =>'js: function(event, ui) {
+					// set name to selected
+					this.value = ui.item.label;
+					// set class to default for this expenditure
+					$("#Expenditure_class_id").val(ui.item.class_id);
+					return false;
+				}',
+			),
+			'htmlOptions'=>array(
+				'style'=>'height:20px;',
+				'size'=>19,
+				'maxlength'=>19
+			),
+		));
+		?>
 		<?php echo $form->error($model,'name'); ?>
 	</div>
 

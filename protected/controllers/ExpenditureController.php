@@ -28,7 +28,7 @@ class ExpenditureController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','autocomplete'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -169,4 +169,26 @@ class ExpenditureController extends Controller
 			Yii::app()->end();
 		}
 	}
+	/**
+	 * Generate list for zii.widgets.jui.CJuiAutoComplete
+	 * @param term string for search
+	 */
+	 public function actionAutocomplete() {
+        $term= Yii::app()->getRequest()->getParam('term');
+
+        if(Yii::app()->request->isAjaxRequest && $term) {
+            $criteria = new CDbCriteria;
+            // generate search criteria
+            $criteria->compare('name',$term,true);
+			$criteria->group='name';
+            $expenditures = Expenditure::model()->findAll($criteria);
+            // hendle results
+            $result = array();
+            foreach($expenditures as $expenditure) {
+                $result[] = array('class_id'=>$expenditure['class_id'], 'label'=>$expenditure['name'], 'value'=>$expenditure['name']);
+            }
+            echo CJSON::encode($result);
+            Yii::app()->end();
+        }
+    }
 }
