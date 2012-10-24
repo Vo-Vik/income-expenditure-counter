@@ -73,7 +73,8 @@ class ExpenditureController extends Controller
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
-
+		//use current date as default for new expenditure
+		$model->date = CTimestamp::formatDate('Y-m-d');
 		$this->render('create',array(
 			'model'=>$model,
 		));

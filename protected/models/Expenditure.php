@@ -41,8 +41,11 @@ class Expenditure extends CActiveRecord
 			array('class_id', 'required'),
 			array('class_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>19),
+			array('name', 'required'),
 			array('amount', 'length', 'max'=>6),
-			array('date', 'safe'),
+			array('amount', 'required'),
+			array('date', 'date','format'=>'yyyy-MM-dd'),
+			array('date', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, amount, date, class_id', 'safe', 'on'=>'search'),

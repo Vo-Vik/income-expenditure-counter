@@ -17,7 +17,34 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'date'); ?>
-		<?php echo $form->textField($model,'date',array('size'=>8,'maxlength'=>8)); ?>
+		<?php
+		$this->widget('zii.widgets.jui.CJuiDatePicker',
+		array(
+			'model'=>$model,
+			'attribute'=>'date',
+			//  optional: jquery Datepicker options
+			'options' => array(
+				'dateFormat'=>'yy-mm-dd',
+
+				// this is useful to allow only valid chars in the input field, according to dateFormat
+				'constrainInput' => 'false',
+				'showAnim' =>'fold',
+			),
+
+
+			// optional: html options will affect the input element, not the datepicker widget itself
+			'htmlOptions'=>array(
+			'style'=>'height:20px;
+				width:80px;
+				background:#ffbf00;
+				color:#00a;
+				font-weight:bold;
+				font-size:0.9em;
+				border: 1px solid #A80;
+				padding-left: 4px;'
+			)
+		));
+		?>
 		<?php echo $form->error($model,'date'); ?>
 	</div>
 
