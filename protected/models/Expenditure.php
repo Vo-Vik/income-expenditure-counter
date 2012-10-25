@@ -42,7 +42,7 @@ class Expenditure extends CActiveRecord
 			array('class_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>19),
 			array('name', 'required'),
-			array('amount', 'length', 'max'=>6),
+			array('amount', 'numerical'),
 			array('amount', 'required'),
 			array('date', 'date','format'=>'yyyy-MM-dd'),
 			array('date', 'required'),

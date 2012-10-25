@@ -41,7 +41,7 @@ class Income extends CActiveRecord
 			array('date', 'required'),
 			array('name', 'length', 'max'=>15),
 			array('name', 'required'),
-			array('amount', 'length', 'max'=>6),
+			array('amount', 'numerical'),
 			array('amount', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
