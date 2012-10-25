@@ -19,6 +19,6 @@ This month your Income is: <?php echo $imodel->totals(true); ?><br />
 This month your Balance is: <?php echo $imodel->totals(true)-$emodel->totals(true); ?>
 </div>
 <br />
-<p><a href="?r=expenditure/admin">Manage your expenditure</a><br />
-<a href="?r=income/admin">Manage your income</a></p>
+<p><a href="<?=$this->createUrl('expenditure/admin');?>">Manage your expenditure</a><br />
+<a href="<?=$this->createUrl('income/admin');?>">Manage your income</a></p>
 
