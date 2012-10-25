@@ -2,19 +2,23 @@
 /* @var $this SiteController */
 
 $this->pageTitle=Yii::app()->name;
+$emodel = new Expenditure;
+$imodel = new Income;
 ?>
 
 <h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
 
-<p>Congratulations! You have successfully created your Yii application.</p>
+<div>
+	Your total Expenditure is: <?php echo $emodel->totals(); ?><br />
+	Your total Income is: <?php echo $imodel->totals(); ?><br />
+	Your total Balance is: <?php echo $imodel->totals()-$emodel->totals(); ?>
+</div>
+<div>
+This month your Expenditure is: <?php echo $emodel->totals(true); ?><br />
+This month your Income is: <?php echo $imodel->totals(true); ?><br />
+This month your Balance is: <?php echo $imodel->totals(true)-$emodel->totals(true); ?>
+</div>
+<br />
+<p><a href="?r=expenditure">Manage your expenditure</a><br />
+<a href="?r=income">Manage your income</a></p>
 
-<p>You may change the content of this page by modifying the following two files:</p>
-<ul>
-	<li>View file: <code><?php echo __FILE__; ?></code></li>
-	<li>Layout file: <code><?php echo $this->getLayoutFile('main'); ?></code></li>
-</ul>
-
-<p>For more details on how to further develop this application, please read
-the <a href="http://www.yiiframework.com/doc/">documentation</a>.
-Feel free to ask in the <a href="http://www.yiiframework.com/forum/">forum</a>,
-should you have any questions.</p>

@@ -93,4 +93,19 @@ class Income extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	/**
+	 * Retrives total sum of income from the begining or for current month
+	 * @param bool $onlyThisMonth - if true return sum only for this month, else all from the begining
+	 */
+	public function totals($onlyThisMonth = false)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->select = "SUM(amount) as amount";
+		if($onlyThisMonth)
+		{
+			$criteria->condition = "date >=DATE_FORMAT(NOW() ,'%Y-%m-01')";
+		}
+
+		return $this->find($criteria)->getAttribute('amount');
+	}
 }
