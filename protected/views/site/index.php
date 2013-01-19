@@ -20,3 +20,31 @@ This month your Balance is: <?php echo $thisMonthIncome-$thisMonthExpenditure; ?
 <p><a href="<?=$this->createUrl('expenditure/admin');?>">Manage your expenditure</a><br />
 <a href="<?=$this->createUrl('income/admin');?>">Manage your income</a></p>
 
+<script type="text/javascript" src="/includes/jscharts.js"></script>
+<div id="chartcontainer">This is just a replacement in case Javascript is not
+available or used for SEO purposes</div>
+<script type="text/javascript">
+var myDatae = new Array(<?echo $expenditureList;?>);
+var myDatai = new Array(<?echo $incomeList;?>);
+var myDatab = new Array(<?echo $balanceList;?>);
+var myChart = new JSChart('chartcontainer', 'line');
+var myChart2 = new JSChart('chartcontainer', 'line');
+myChart.setSize(800, 300);
+myChart2.setSize(800, 300);
+myChart2.setShowYValues(true);
+myChart.setDataArray(myDatae, '1');
+myChart.setDataArray(myDatai, '2');
+myChart2.setDataArray(myDatab, '1');
+myChart.setLineColor('#000000','1');
+myChart.setLineColor('#f00','2');
+myChart2.setLineColor('#000000','1');
+myChart.setLegendForLine('1', 'Expenditures');
+myChart.setLegendForLine('2', 'Income');
+myChart2.setLegendForLine('1', 'Balance');
+myChart.setLineSpeed(100);
+myChart2.setLineSpeed(100);
+myChart.setLegendShow(true);
+myChart2.setLegendShow(true);
+myChart.draw();
+myChart2.draw();
+</script>

@@ -65,11 +65,29 @@ class SiteController extends Controller
 		$imodel = new Income;
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
+		$expenditureList='';
+		$incomeList='';
+		$balanceList='';
+		$first = true;
+		$month = '2011-09';
+		$now = date('Y-m');
+		while($month!=$now) {
+			$expenditure = $emodel->totals($month);
+			$income= $imodel->totals($month);
+			$expenditureList.=($first?"":",")."['".$month."',".($expenditure?$expenditure:'0')."]";
+			$incomeList.=($first?"":",")."['".$month."',".($income?$income:'0')."]";
+			$balanceList.=($first?"":",")."['".$month."',".($income-$expenditure)."]";
+			$first=false;
+			$month = date('Y-m', strtotime('+ 1 month', strtotime($month.'-01')));
+		}
 		$this->render('index', array(
 			'totalExpenditure' => $emodel->totals(),
 			'totalIncome' => $imodel->totals(),
-			'thisMonthExpenditure' => $emodel->totals(true),
-			'thisMonthIncome' => $imodel->totals(true),
+			'thisMonthExpenditure' => $emodel->totals(date('Y-m',time())),
+			'thisMonthIncome' => $imodel->totals(date('Y-m',time())),
+			'expenditureList' => $expenditureList,
+			'incomeList' => $incomeList,
+			'balanceList' => $balanceList,
 		));
 	}
 

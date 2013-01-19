@@ -95,15 +95,24 @@ class Income extends CActiveRecord
 	}
 	/**
 	 * Retrives total sum of income from the begining or for current month
-	 * @param bool $onlyThisMonth - if true return sum only for this month, else all from the begining
+	 * @param string $month - if isset return sum only for this month, else all from the begining
 	 */
-	public function totals($onlyThisMonth = false)
+	public function totals($month='')
 	{
+		if($month) {
+			$stamp = strtotime( $month.'-01');
+			if(is_numeric($stamp)){
+				$year  = date( 'Y', $stamp );
+				$month = date( 'm', $stamp );
+				$year2  = date( 'Y' ,strtotime('+ 1 month',$stamp));
+				$month2 = date( 'm' ,strtotime('+ 1 month',$stamp));
+			}
+		}
 		$criteria = new CDbCriteria;
 		$criteria->select = "SUM(amount) as amount";
-		if($onlyThisMonth)
+		if(isset($year))
 		{
-			$criteria->condition = "date >=DATE_FORMAT(NOW() ,'%Y-%m-01')";
+			$criteria->condition = "date >='".$year."-".$month."-01' AND date <'".$year2."-".$month2."-01'";
 		}
 
 		return $this->find($criteria)->getAttribute('amount');
