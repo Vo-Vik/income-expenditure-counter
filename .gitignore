@@ -2,3 +2,6 @@
 protected/runtime
 protected/config/main.php
 assets
+.buildpath
+.project
+.settings/
