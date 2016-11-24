@@ -33,9 +33,8 @@
 
 	<div class="row">
 		<?php echo $form->label($model,'class_id'); ?>
-		<?php echo $form->textField($model,'class_id'); ?>
+		<?php echo $form->dropDownList($model,'class_id', CHtml::listData(EclassInfo::model()->findAll(), 'id', 'name'), array(''=>'select Class')); ?>
 	</div>
-
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

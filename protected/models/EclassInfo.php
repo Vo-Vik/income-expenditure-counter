@@ -67,6 +67,19 @@ class EclassInfo extends CActiveRecord
 	}
 
 	/**
+	 * @return array of classes in form class_id=>class_name
+	 */
+	public function getClassesList()
+	{
+		$list=array();
+		foreach($this->findAll() as $class)
+		{
+			$list[$class['id']]=$class['name'];
+		}
+		return $list;
+	}
+
+	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */

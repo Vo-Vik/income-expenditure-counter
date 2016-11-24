@@ -60,7 +60,7 @@ class Expenditure extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'class_id' => array(self::BELONGS_TO, 'EclassInfo', 'id'),
+			'classType' => array(self::BELONGS_TO, 'EclassInfo', 'class_id'),
 		);
 	}
 
@@ -79,10 +79,9 @@ class Expenditure extends CActiveRecord
 	}
 
 	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 * Prepare search criteria
 	 */
-	public function search()
+	public function getSearchCriteria()
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
@@ -95,15 +94,42 @@ class Expenditure extends CActiveRecord
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('class_id',$this->class_id);
 
+	    return $criteria;
+	}
+
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+		$criteria = $this->getSearchCriteria();
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>50,
+			),
 		));
+	}
+
+	/**
+	 * Retrieves a total amount for specified criterias
+	 * @return int
+	 */
+	public function totalAmount()
+	{
+	    $criteria=$this->getSearchCriteria();
+	    $criteria->select='SUM(amount)';
+	    return $this->commandBuilder->createFindCommand($this->getTableSchema(),$criteria)->queryScalar();
+
 	}
 	/**
 	 * Retrives total sum of expenditure from the begining or for current month
 	 * @param string $month - if isset return sum only for this month, else all from the begining
 	 */
-	public function totals($month='')
+	public function totals($month='', $type=0)
 	{
 		if($month) {
 			$stamp = strtotime( $month.'-01');
@@ -119,6 +145,9 @@ class Expenditure extends CActiveRecord
 		if(isset($year))
 		{
 			$criteria->condition = "date >='".$year."-".$month."-01' AND date <'".$year2."-".$month2."-01'";
+		}
+		if($type) {
+			$criteria->condition.= " AND class_id=".$type;
 		}
 
 		return $this->find($criteria)->getAttribute('amount');

@@ -61,22 +61,31 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$eClassModel = new EclassInfo;
+		$classes = $eClassModel->getClassesList();
+		if(isset($_GET['class']) && in_array($_GET['class'], array_keys($classes))) $class=$_GET['class'];
+		else $class = 1;
 		$emodel = new Expenditure;
 		$imodel = new Income;
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$expenditureList='';
+		$expenditureClassList='';
 		$incomeList='';
 		$balanceList='';
 		$first = true;
 		$month = '2011-09';
 		$now = date('Y-m');
+		$monthBalance = 0;
 		while($month!=$now) {
 			$expenditure = $emodel->totals($month);
+			$expenditureClass = $emodel->totals($month, $class);
 			$income= $imodel->totals($month);
 			$expenditureList.=($first?"":",")."['".$month."',".($expenditure?$expenditure:'0')."]";
+			$expenditureClassList.=($first?"":",")."['".$month."',".($expenditureClass?$expenditureClass:'0')."]";
 			$incomeList.=($first?"":",")."['".$month."',".($income?$income:'0')."]";
-			$balanceList.=($first?"":",")."['".$month."',".($income-$expenditure)."]";
+			$monthBalance += $income-$expenditure;
+			$balanceList.=($first?"":",")."['".$month."',".($monthBalance)."]";
 			$first=false;
 			$month = date('Y-m', strtotime('+ 1 month', strtotime($month.'-01')));
 		}
@@ -86,6 +95,9 @@ class SiteController extends Controller
 			'thisMonthExpenditure' => $emodel->totals(date('Y-m',time())),
 			'thisMonthIncome' => $imodel->totals(date('Y-m',time())),
 			'expenditureList' => $expenditureList,
+			'expenditureClassList' => $expenditureClassList,
+			'classes'=>$classes,
+			'class' => (isset($classes[$class])?$classes[$class]:'undefined'),
 			'incomeList' => $incomeList,
 			'balanceList' => $balanceList,
 		));
