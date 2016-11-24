@@ -129,9 +129,18 @@ class Expenditure extends CActiveRecord
 	 * Retrives total sum of expenditure from the begining or for current month
 	 * @param string $month - if isset return sum only for this month, else all from the begining
 	 */
-	public function totals($month='', $type=0)
+	public function totals($month='', $type=0, $year = '')
 	{
-		if($month) {
+		if($year) {
+			$stamp = strtotime( $year.'-01-01');
+			if(is_numeric($stamp)){
+				$year  = date( 'Y', $stamp );
+				$month = '01';
+				$year2  = date( 'Y' ,strtotime('+ 1 year',$stamp));
+				$month2 = '01';
+			}
+		}
+		elseif($month) {
 			$stamp = strtotime( $month.'-01');
 			if(is_numeric($stamp)){
 				$year  = date( 'Y', $stamp );
@@ -142,7 +151,7 @@ class Expenditure extends CActiveRecord
 		}
 		$criteria = new CDbCriteria;
 		$criteria->select = "SUM(amount) as amount";
-		if(isset($year))
+		if($year)
 		{
 			$criteria->condition = "date >='".$year."-".$month."-01' AND date <'".$year2."-".$month2."-01'";
 		}
