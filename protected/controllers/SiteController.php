@@ -70,14 +70,19 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$expenditureList='';
+		$expenditureList12='';
 		$expenditureClassList='';
 		$incomeList='';
+		$incomeList12='';
 		$balanceList='';
 		$first = true;
 		$month = '2011-09';
 		$now = date('Y-m');
+		$year_ago = date('Y-m',strtotime('-1 year'));
 		$monthBalance = 0;
+		$fill12 = false;
 		while($month!=$now) {
+			if($month == $year_ago) $fill12 = true;
 			$expenditure = $emodel->totals($month);
 			$expenditureClass = $emodel->totals($month, $class);
 			$income= $imodel->totals($month);
@@ -87,6 +92,10 @@ class SiteController extends Controller
 			$monthBalance += $income-$expenditure;
 			$balanceList.=($first?"":",")."['".$month."',".($monthBalance)."]";
 			$first=false;
+			if($fill12) {
+				$expenditureList12.=($month == $year_ago?"":",")."['".$month."',".($expenditure?$expenditure:'0')."]";
+				$incomeList12.=($month == $year_ago?"":",")."['".$month."',".($income?$income:'0')."]";
+			}
 			$month = date('Y-m', strtotime('+ 1 month', strtotime($month.'-01')));
 		}
 		$this->render('index', array(
@@ -99,10 +108,12 @@ class SiteController extends Controller
 			'lastMonthExpenditure' => $emodel->totals(date('Y-m',strtotime('- 1 month'))),
 			'lastMonthIncome' => $imodel->totals(date('Y-m',strtotime('- 1 month'))),
 			'expenditureList' => $expenditureList,
+			'expenditureList12' => $expenditureList12,
 			'expenditureClassList' => $expenditureClassList,
 			'classes'=>$classes,
 			'class' => (isset($classes[$class])?$classes[$class]:'undefined'),
 			'incomeList' => $incomeList,
+			'incomeList12' => $incomeList12,
 			'balanceList' => $balanceList,
 		));
 	}

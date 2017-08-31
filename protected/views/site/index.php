@@ -44,35 +44,48 @@ available or used for SEO purposes</div>
 <?}?>
 <script type="text/javascript">
 var myDatae = new Array(<?echo $expenditureList;?>);
+var myDatae12 = new Array(<?echo $expenditureList12;?>);
 var myDataec = new Array(<?echo $expenditureClassList;?>);
 var myDatai = new Array(<?echo $incomeList;?>);
+var myDatai12 = new Array(<?echo $incomeList12;?>);
 var myDatab = new Array(<?echo $balanceList;?>);
 var myChart = new JSChart('chartcontainer', 'line');
+var myChart1 = new JSChart('chartcontainer', 'line');
 var myChart2 = new JSChart('chartcontainer', 'line');
 var myChart3 = new JSChart('chartcontainer', 'line');
 myChart.setSize(800, 300);
+myChart1.setSize(800, 300);
 myChart2.setSize(800, 300);
 myChart3.setSize(800, 300);
 myChart2.setShowYValues(true);
 myChart.setDataArray(myDatae, '1');
 myChart.setDataArray(myDatai, '2');
+myChart1.setDataArray(myDatae12, '1');
+myChart1.setDataArray(myDatai12, '2');
 myChart2.setDataArray(myDatab, '1');
 myChart3.setDataArray(myDataec, '1');
 myChart.setLineColor('#000000','1');
 myChart.setLineColor('#f00','2');
+myChart1.setLineColor('#000000','1');
+myChart1.setLineColor('#f00','2');
 myChart2.setLineColor('#000000','1');
 myChart3.setLineColor('#000000','1');
 myChart.setLegendForLine('1', 'Expenditures');
 myChart.setLegendForLine('2', 'Income');
+myChart1.setLegendForLine('1', 'Expenditures');
+myChart1.setLegendForLine('2', 'Income');
 myChart2.setLegendForLine('1', 'Balance');
 myChart3.setLegendForLine('1', '<?=$class;?>');
 myChart.setLineSpeed(100);
+myChart1.setLineSpeed(100);
 myChart2.setLineSpeed(100);
 myChart3.setLineSpeed(100);
 myChart.setLegendShow(true);
+myChart1.setLegendShow(true);
 myChart2.setLegendShow(true);
 myChart3.setLegendShow(true);
 myChart.draw();
+myChart1.draw();
 myChart2.draw();
 myChart3.draw();
 </script>
