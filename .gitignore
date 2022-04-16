@@ -1,0 +1,5 @@
+composer
+vendor/*
+mysql_conf.env
+mysite.sql
+composer.lock
