@@ -1,5 +1,3 @@
-	
-
 <?php
 
 /**
@@ -96,7 +94,7 @@ class User extends CActiveRecord
     {
         return $this->hashPassword($password,$this->salt)===$this->password;
     }
- 
+
     public function hashPassword($password,$salt)
     {
         return md5($salt.$password);

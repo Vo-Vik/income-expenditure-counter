@@ -1,7 +1,9 @@
 *~
-protected/runtime
+protected/runtime/
 protected/config/main.php
 assets
 .buildpath
 .project
 .settings/
+test_php.php
+assets/

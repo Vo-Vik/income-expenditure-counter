@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+    php-httpd:
+        build:
+            context: ./php-httpd
+        ports:
+            - 80:80
+        #user: ${CURRENT_UID}
+        volumes:
+            - ".:/var/www/html"
+        links:
+            - 'mariadb:db'
+    mariadb:
+        image: mariadb:10.5.2
+        volumes:
+            - mariadb-volume:/var/lib/mysql
+        env_file:
+            mysql_conf.env
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - 'mariadb:db'
+        ports:
+            - 8081:80
+volumes:
+    mariadb-volume:
